@@ -8,7 +8,7 @@ from http import HTTPStatus
 from .service import BookService
 from .schemas import BookCreateModel, BookResponseModel
 
-book_router = APIRouter(prefix="/books")
+book_router = APIRouter(prefix="/books", tags=["Books"])
 
 
 @book_router.get("/", response_model=List[BookResponseModel])
