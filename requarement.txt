@@ -12,3 +12,8 @@ python-multipart
 SQLAlchemy
 sqlmodel
 uvicorn
+redis
+celery
+fastapi_mail
+jwt
+itsdangerous
