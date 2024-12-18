@@ -9,7 +9,7 @@ from fastapi.security.http import HTTPAuthorizationCredentials
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from db.main import get_session
-from auth.models import User
+from db.models import User
 from db.redis import token_in_blocklist
 
 from .service import UserService

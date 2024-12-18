@@ -7,7 +7,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from auth.service import UserService
 from book.service import BookService
-from reviews.models import Review
+from db.models import Review
 
 from .schemas import ReviewCreateModel
 

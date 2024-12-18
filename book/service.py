@@ -1,5 +1,5 @@
 from sqlmodel.ext.asyncio.session import AsyncSession
-from .models import Book
+from db.models import Book
 from .schemas import BookCreateModel
 from sqlmodel import select
 

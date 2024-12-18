@@ -90,7 +90,9 @@ async def create_user_Account(
     emails = [email]
 
     subject = "Verify Your email"
-
+    print(emails)
+    print(subject)
+    print(html)
     send_email.delay(emails, subject, html)
 
     return {

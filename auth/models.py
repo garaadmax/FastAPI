@@ -1,37 +1,41 @@
+from sqlalchemy import Column, String, Boolean, DateTime, ForeignKey
+from sqlalchemy.dialects.postgresql import UUID, VARCHAR
+from sqlalchemy.orm import relationship, declarative_base
 import uuid
-from datetime import date, datetime
-from typing import List, Optional
+from datetime import datetime
+# from typing import List
+#
+# import sqlalchemy.dialects.postgresql as pg
+# from sqlmodel import  Field, Relationship, SQLModel
+# from book.models import Book
+# from reviews.models import Review
 
-import sqlalchemy.dialects.postgresql as pg
-from sqlmodel import Column, Field, Relationship, SQLModel
-from book.models import Book
-from reviews.models import Review
 
 
-class User(SQLModel, table=True):
+
+
+
+Base = declarative_base()
+
+class Users(Base):
     __tablename__ = "users"
-    uid: uuid.UUID = Field(
-        sa_column=Column(pg.UUID, nullable=False, primary_key=True, default=uuid.uuid4)
-    )
-    username: str
-    email: str
-    first_name: str
-    last_name: str
-    role: str = Field(
-        sa_column=Column(pg.VARCHAR, nullable=False, server_default="user")
-    )
-    is_verified: bool = Field(default=False)
-    password_hash: str = Field(
-        sa_column=Column(pg.VARCHAR, nullable=False), exclude=True
-    )
-    created_at: datetime = Field(sa_column=Column(pg.TIMESTAMP, default=datetime.now))
-    update_at: datetime = Field(sa_column=Column(pg.TIMESTAMP, default=datetime.now))
-    books: List["Book"] = Relationship(
-        back_populates="user", sa_relationship_kwargs={"lazy": "selectin"}
-    )
-    reviews: List["Review"] = Relationship(
-        back_populates="user", sa_relationship_kwargs={"lazy": "selectin"}
-    )
+
+    uid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, nullable=False)
+    username = Column(String, nullable=False)
+    email = Column(String, nullable=False, unique=True)
+    first_name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
+    role = Column(VARCHAR, nullable=False, server_default="user")
+    is_verified = Column(Boolean, default=False)
+    password_hash = Column(VARCHAR, nullable=False)
+    created_at = Column(DateTime, default=datetime.now)
+    update_at = Column(DateTime, default=datetime.now)
+
+    # Relationships
+    books = relationship("Book", back_populates="user", lazy="selectin")
+    reviews = relationship("Review", back_populates="user", lazy="selectin")
 
     def __repr__(self):
         return f"<User {self.username}>"
+
+

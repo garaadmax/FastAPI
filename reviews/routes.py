@@ -3,7 +3,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from auth.dependencies import RoleChecker, get_current_user
 from db.main import get_session
-from auth.models import User
+from db.models import User
 
 from .schemas import ReviewCreateModel
 from .service import ReviewService

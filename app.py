@@ -1,6 +1,4 @@
 from fastapi import FastAPI
-from login import routers
-from book.routers import book_router
 from contextlib import asynccontextmanager
 from db.main import init_db
 from errors import register_all_errors

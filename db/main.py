@@ -16,10 +16,7 @@ async_session = sessionmaker(
 async def init_db():
     """Create the database tables"""
     async with async_engine.begin() as conn:
-        from book.models import Book
-        from auth.models import User
-        from reviews.models import Review
-        from tags.models import Tag
+        from db.models import Book, User, Review, Tag
         await conn.run_sync(SQLModel.metadata.create_all)
 
 

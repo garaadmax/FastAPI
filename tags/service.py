@@ -4,7 +4,7 @@ from sqlmodel import desc, select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from book.service import BookService
-from tags.models import Tag
+from db.models import Tag
 
 from .schemas import TagAddModel, TagCreateModel
 from errors import BookNotFound, TagNotFound, TagAlreadyExists
