@@ -4,8 +4,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.orm import sessionmaker
 from config import Config as settings
 
-async_engine = create_async_engine(url=settings.database_url, echo=True)
-
+async_engine = create_async_engine(url=settings.database_url)
 
 async_session = sessionmaker(
     bind=async_engine,
@@ -13,10 +12,14 @@ async_session = sessionmaker(
     expire_on_commit=False
 )
 
+
 async def init_db():
     """Create the database tables"""
     async with async_engine.begin() as conn:
         from book.models import Book
+        from auth.models import User
+        from reviews.models import Review
+        from tags.models import Tag
         await conn.run_sync(SQLModel.metadata.create_all)
 
 

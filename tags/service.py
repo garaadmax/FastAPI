@@ -9,8 +9,6 @@ from tags.models import Tag
 from .schemas import TagAddModel, TagCreateModel
 from errors import BookNotFound, TagNotFound, TagAlreadyExists
 
-book_service = BookService()
-
 server_error = HTTPException(
     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Something went wrong"
 )
@@ -32,7 +30,7 @@ class TagService:
     ):
         """Add tags to a book"""
 
-        book = await book_service.get_book(book_uid=book_uid, session=session)
+        book = await BookService(session=session).get_book(book_uid=book_uid)
 
         if not book:
             raise BookNotFound()

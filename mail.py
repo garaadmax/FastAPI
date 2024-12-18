@@ -1,4 +1,6 @@
 from fastapi_mail import FastMail, ConnectionConfig, MessageSchema, MessageType
+from typing import List
+
 from config import Config
 from pathlib import Path
 
@@ -15,15 +17,12 @@ mail_config = ConnectionConfig(
     MAIL_SSL_TLS=False,
     USE_CREDENTIALS=True,
     VALIDATE_CERTS=True,
-    # TEMPLATE_FOLDER=Path(BASE_DIR, "templates"),
+    TEMPLATE_FOLDER=Path(BASE_DIR, "templates"),
 )
 
 mail = FastMail(config=mail_config)
 
 
-def create_message(recipients: list[str], subject: str, body: str):
-    message = MessageSchema(
-        recipients=recipients, subject=subject, body=body, subtype=MessageType.html
-    )
-
+def create_message(recipients: List[str], subject: str, body: str):
+    message = MessageSchema(recipients=recipients, subject=subject, body=body, subtype=MessageType.html)
     return message

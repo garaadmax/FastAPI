@@ -4,6 +4,8 @@ from typing import List, Optional
 
 import sqlalchemy.dialects.postgresql as pg
 from sqlmodel import Column, Field, Relationship, SQLModel
+from book.models import Book
+from reviews.models import Review
 
 
 class User(SQLModel, table=True):

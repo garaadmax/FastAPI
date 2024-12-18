@@ -1,7 +1,7 @@
 import uuid
 from datetime import date, datetime
 from typing import List, Optional
-
+from book.models import Book
 import sqlalchemy.dialects.postgresql as pg
 from sqlmodel import Column, Field, Relationship, SQLModel
 

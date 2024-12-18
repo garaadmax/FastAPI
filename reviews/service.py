@@ -11,7 +11,6 @@ from reviews.models import Review
 
 from .schemas import ReviewCreateModel
 
-book_service = BookService()
 user_service = UserService()
 
 
@@ -24,7 +23,7 @@ class ReviewService:
             session: AsyncSession,
     ):
         try:
-            book = await book_service.get_book(book_uid=book_uid, session=session)
+            book = await BookService(session=session).get_book(book_uid=book_uid)
             user = await user_service.get_user_by_email(
                 email=user_email, session=session
             )
