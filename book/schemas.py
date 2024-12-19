@@ -1,4 +1,4 @@
-from db.models import Book
+from book.models import Books as Book
 from pydantic import BaseModel
 
 

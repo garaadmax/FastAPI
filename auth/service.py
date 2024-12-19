@@ -1,7 +1,7 @@
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from db.models import User
+from auth.models import Users
 
 from .schemas import UserCreateModel
 from .utils import generate_passwd_hash
@@ -9,7 +9,7 @@ from .utils import generate_passwd_hash
 
 class UserService:
     async def get_user_by_email(self, email: str, session: AsyncSession):
-        statement = select(User).where(User.email == email)
+        statement = select(Users).where(Users.email == email)
 
         result = await session.exec(statement)
 
@@ -25,7 +25,7 @@ class UserService:
     async def create_user(self, user_data: UserCreateModel, session: AsyncSession):
         user_data_dict = user_data.model_dump()
 
-        new_user = User(**user_data_dict)
+        new_user = Users(**user_data_dict)
 
         new_user.password_hash = generate_passwd_hash(user_data_dict["password"])
         new_user.role = "user"
@@ -36,7 +36,7 @@ class UserService:
 
         return new_user
 
-    async def update_user(self, user: User, user_data: dict, session: AsyncSession):
+    async def update_user(self, user: Users, user_data: dict, session: AsyncSession):
         for k, v in user_data.items():
             setattr(user, k, v)
 

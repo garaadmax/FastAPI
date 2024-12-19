@@ -59,7 +59,7 @@ async def send_mail(emails: EmailModel):
 
 
 @auth_router.post("/signup", status_code=status.HTTP_201_CREATED)
-async def create_user_Account(
+async def create_user_account(
         user_data: UserCreateModel,
         bg_tasks: BackgroundTasks,
         session: AsyncSession = Depends(get_session),
@@ -90,9 +90,6 @@ async def create_user_Account(
     emails = [email]
 
     subject = "Verify Your email"
-    print(emails)
-    print(subject)
-    print(html)
     send_email.delay(emails, subject, html)
 
     return {

@@ -1,0 +1,16 @@
+alembic init -t async migrations
+alembic revision --autogenerate -m "Initial migration"
+alembic upgrade head
+
+export PYTHONWARNINGS="ignore"
+sudo apt update
+sudo apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev \
+libssl-dev libsqlite3-dev libreadline-dev libffi-dev wget libbz2-dev
+git clone https://github.com/python/cpython.git
+cd cpython
+git checkout 3.13
+./configure --enable-optimizations
+make -j$(nproc)
+sudo make altinstall
+python3.13 --version
+sudo update-alternatives --config python

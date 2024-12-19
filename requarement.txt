@@ -17,3 +17,5 @@ celery
 fastapi_mail
 jwt
 itsdangerous
+alembic
+python-dotenv
