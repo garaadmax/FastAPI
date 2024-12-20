@@ -15,7 +15,6 @@ ACCESS_TOKEN_EXPIRY = 3600
 
 def generate_passwd_hash(password: str) -> str:
     hash = passwd_context.hash(password)
-
     return hash
 
 
@@ -50,7 +49,6 @@ def decode_token(token: str) -> dict:
         )
 
         return token_data
-
     except jwt.PyJWTError as e:
         logging.exception(e)
         return None
@@ -63,15 +61,12 @@ serializer = URLSafeTimedSerializer(
 
 def create_url_safe_token(data: dict):
     token = serializer.dumps(data)
-
     return token
 
 
 def decode_url_safe_token(token: str):
     try:
         token_data = serializer.loads(token)
-
         return token_data
-
     except Exception as e:
         logging.error(str(e))

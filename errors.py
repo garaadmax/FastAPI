@@ -4,9 +4,9 @@ from fastapi.responses import JSONResponse
 from fastapi import FastAPI, status
 from sqlalchemy.exc import SQLAlchemyError
 
+
 class BooklyException(Exception):
     """This is the base class for all bookly errors"""
-
     pass
 
 
@@ -80,13 +80,11 @@ class AccountNotVerified(Exception):
     """Account not yet verified"""
     pass
 
-def create_exception_handler(
-    status_code: int, initial_detail: Any
-) -> Callable[[Request, Exception], JSONResponse]:
 
-    async def exception_handler(request: Request, exc: BooklyException):
-
-        return JSONResponse(content=initial_detail, status_code=status_code)
+def create_exception_handler(status_code: int, initial_detail: Any) -> Callable[[Request, Exception], JSONResponse]:
+    def exception_handler(request: Request, exc: Exception) -> JSONResponse:
+        detail = initial_detail if isinstance(exc, BooklyException) else {"error": "Unexpected error occurred"}
+        return JSONResponse(content=detail, status_code=status_code)
 
     return exception_handler
 
@@ -224,14 +222,13 @@ def register_all_errors(app: FastAPI):
             initial_detail={
                 "message": "Account Not verified",
                 "error_code": "account_not_verified",
-                "resolution":"Please check your email for verification details"
+                "resolution": "Please check your email for verification details"
             },
         ),
     )
 
     @app.exception_handler(500)
     async def internal_server_error(request, exc):
-
         return JSONResponse(
             content={
                 "message": "Oops! Something went wrong",
@@ -239,7 +236,6 @@ def register_all_errors(app: FastAPI):
             },
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
-
 
     @app.exception_handler(SQLAlchemyError)
     async def database__error(request, exc):

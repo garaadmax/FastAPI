@@ -5,9 +5,11 @@ from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 from sqlmodel.ext.asyncio.session import AsyncSession
 
+from celery_tasks import send_email
+from config import Config
 from db.main import get_session
 from db.redis import add_jti_to_blocklist
-
+from errors import UserAlreadyExists, UserNotFound, InvalidCredentials, InvalidToken
 from .dependencies import (
     AccessTokenBearer,
     RefreshTokenBearer,
@@ -18,7 +20,6 @@ from .schemas import (
     UserBooksModel,
     UserCreateModel,
     UserLoginModel,
-    UserModel,
     EmailModel,
     PasswordResetRequestModel,
     PasswordResetConfirmModel,
@@ -31,10 +32,6 @@ from .utils import (
     create_url_safe_token,
     decode_url_safe_token,
 )
-from errors import UserAlreadyExists, UserNotFound, InvalidCredentials, InvalidToken
-from config import Config
-from db.main import get_session
-from celery_tasks import send_email
 
 auth_router = APIRouter()
 user_service = UserService()
@@ -124,9 +121,7 @@ async def verify_user_account(token: str, session: AsyncSession = Depends(get_se
 
 
 @auth_router.post("/login")
-async def login_users(
-        login_data: UserLoginModel, session: AsyncSession = Depends(get_session)
-):
+async def login_users(login_data: UserLoginModel, session: AsyncSession = Depends(get_session)):
     email = login_data.email
     password = login_data.password
 

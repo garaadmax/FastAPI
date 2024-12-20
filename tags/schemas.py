@@ -1,6 +1,5 @@
 import uuid
 from datetime import datetime
-from typing import List
 
 from pydantic import BaseModel
 
@@ -16,4 +15,4 @@ class TagCreateModel(BaseModel):
 
 
 class TagAddModel(BaseModel):
-    tags: List[TagCreateModel]
+    tags: list[TagCreateModel]

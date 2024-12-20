@@ -1,5 +1,5 @@
 asyncpg
-bcrypt
+bcrypt==3.2.0
 fastapi
 greenlet
 passlib
@@ -15,7 +15,8 @@ uvicorn
 redis
 celery
 fastapi_mail
-jwt
+PyJWT
 itsdangerous
 alembic
 python-dotenv
+asgiref

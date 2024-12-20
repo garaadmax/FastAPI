@@ -9,7 +9,7 @@ from fastapi.security.http import HTTPAuthorizationCredentials
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from db.main import get_session
-from auth.models import Users
+from db.models import User as Users
 from db.redis import token_in_blocklist
 
 from .service import UserService
@@ -29,7 +29,7 @@ class TokenBearer(HTTPBearer):
     def __init__(self, auto_error=True):
         super().__init__(auto_error=auto_error)
 
-    async def __call__(self, request: Request) -> HTTPAuthorizationCredentials | None:
+    async def __call__(self, request: Request) -> dict:
         creds = await super().__call__(request)
 
         token = creds.credentials

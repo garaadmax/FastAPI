@@ -1,10 +1,9 @@
 import uuid
 from datetime import datetime
-from typing import List
 
 from pydantic import BaseModel, Field
-
-from book.schemas import Book
+from db.models import Book
+# from book.schemas import Book
 from reviews.schemas import ReviewModel
 
 
@@ -41,8 +40,8 @@ class UserModel(BaseModel):
 
 
 class UserBooksModel(UserModel):
-    books: List[Book]
-    reviews: List[ReviewModel]
+    books: list[Book]
+    reviews: list[ReviewModel]
 
 
 class UserLoginModel(BaseModel):
@@ -51,7 +50,7 @@ class UserLoginModel(BaseModel):
 
 
 class EmailModel(BaseModel):
-    addresses: List[str]
+    addresses: list[str]
 
 
 class PasswordResetRequestModel(BaseModel):

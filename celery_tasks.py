@@ -3,12 +3,16 @@ from celery import Celery
 from auth.schemas import EmailModel
 from mail import mail, create_message
 from asgiref.sync import async_to_sync
-from typing import List
 import logging
 
-c_app = Celery()
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-c_app.config_from_object("config")
+celery_app = Celery()
+
+celery_app.config_from_object("config")
+
 
 # @c_app.task()
 # def send_email(recipients: List[str], subject: str, body: str):
@@ -17,12 +21,8 @@ c_app.config_from_object("config")
 #     async_to_sync(mail.send_message)(message)
 #     print("Email sent")
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
-
-@c_app.task()
+@celery_app.task()
 def send_email(recipients: EmailModel, subject: str, body: str):
     try:
         # Validate recipients

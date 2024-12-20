@@ -1,5 +1,3 @@
-# Book API endpoints
-
 from fastapi import APIRouter, Depends
 from sqlmodel.ext.asyncio.session import AsyncSession
 from typing import List
@@ -19,7 +17,10 @@ async def read_books(session: AsyncSession = Depends(get_session)):
 
 
 @book_router.post("/", status_code=HTTPStatus.CREATED)
-async def create_book(book_create_data: BookCreateModel, session: AsyncSession = Depends(get_session)):
+async def create_book(
+        book_create_data: BookCreateModel,
+        session: AsyncSession = Depends(get_session)
+):
     """Create a new book"""
     new_book = await BookService(session).create_book(book_create_data)
     return new_book
