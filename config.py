@@ -10,7 +10,8 @@ class Settings(BaseSettings):
     database_url: str = os.getenv("DATABASE_URL")
     JWT_SECRET: str
     JWT_ALGORITHM: str
-    REDIS_URL: str = "redis://localhost:6379/0"
+    REDIS_URL: str
+    MAIL_SALT: str
     MAIL_USERNAME: str
     MAIL_PASSWORD: str
     MAIL_FROM: str
@@ -22,6 +23,11 @@ class Settings(BaseSettings):
     USE_CREDENTIALS: bool = True
     VALIDATE_CERTS: bool = True
     DOMAIN: str
+    OTP_SECRET: str
+    OTP_LENGTH: int
+    OTP_ALGORITHM: str
+    OTP_VALIDITY: int
+    ACCESS_TOKEN_EXPIRY: int
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 

@@ -32,5 +32,5 @@ register_middleware(app)
 
 app.include_router(auth_router, prefix=f"{version_prefix}/auth", tags=["auth"])
 app.include_router(book_router, prefix=f"{version_prefix}/books", tags=["books"])
-# app.include_router(review_router, prefix=f"{version_prefix}/reviews", tags=["reviews"])
-# app.include_router(tags_router, prefix=f"{version_prefix}/tags", tags=["tags"])
+app.include_router(review_router, prefix=f"{version_prefix}/reviews", tags=["reviews"])
+app.include_router(tags_router, prefix=f"{version_prefix}/tags", tags=["tags"])

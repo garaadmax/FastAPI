@@ -1,11 +1,19 @@
 import datetime
-
+from uuid import UUID
 from db.models import Book
 from pydantic import BaseModel
 
 
 class BookResponseModel(BaseModel):
-    book: Book
+    uid: UUID
+    title: str
+    author: str
+    publisher: str
+    published_date: datetime.date
+    page_count: int
+    language: str
+    created_at: datetime.datetime
+    update_at: datetime.datetime
     """ This class is used to validate the response when getting book objects """
 
 

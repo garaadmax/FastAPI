@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-
+import logging
 from fastapi import APIRouter, Depends, status, BackgroundTasks
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
@@ -37,14 +37,15 @@ auth_router = APIRouter()
 user_service = UserService()
 role_checker = RoleChecker(["admin", "user"])
 
-REFRESH_TOKEN_EXPIRY = 2
+REFRESH_TOKEN_EXPIRY = 720
 
 
 # Bearer Token
 
 
 @auth_router.post("/send_mail")
-async def send_mail(emails: EmailModel):
+async def send_mail(emails: EmailModel, token_details: dict = Depends(AccessTokenBearer())):
+    logging.info(token_details)
     emails = emails.addresses
 
     html = "<h1>Welcome to the app</h1>"
@@ -142,7 +143,7 @@ async def login_users(login_data: UserLoginModel, session: AsyncSession = Depend
             refresh_token = create_access_token(
                 user_data={"email": user.email, "user_uid": str(user.uid)},
                 refresh=True,
-                expiry=timedelta(days=REFRESH_TOKEN_EXPIRY),
+                expiry=timedelta(seconds=REFRESH_TOKEN_EXPIRY),
             )
 
             return JSONResponse(
@@ -150,7 +151,10 @@ async def login_users(login_data: UserLoginModel, session: AsyncSession = Depend
                     "message": "Login successful",
                     "access_token": access_token,
                     "refresh_token": refresh_token,
-                    "user": {"email": user.email, "uid": str(user.uid)},
+                    "user": {
+                        "email": user.email,
+                        "uid": str(user.uid)
+                    },
                 }
             )
 
@@ -160,19 +164,14 @@ async def login_users(login_data: UserLoginModel, session: AsyncSession = Depend
 @auth_router.get("/refresh_token")
 async def get_new_access_token(token_details: dict = Depends(RefreshTokenBearer())):
     expiry_timestamp = token_details["exp"]
-
     if datetime.fromtimestamp(expiry_timestamp) > datetime.now():
         new_access_token = create_access_token(user_data=token_details["user"])
-
         return JSONResponse(content={"access_token": new_access_token})
-
     raise InvalidToken
 
 
-@auth_router.get("/me", response_model=UserBooksModel)
-async def get_current_user(
-        user=Depends(get_current_user), _: bool = Depends(role_checker)
-):
+@auth_router.get("/me", )  # response_model=UserBooksModel
+async def get_current_user(user=Depends(get_current_user), _: bool = Depends(role_checker)):
     return user
 
 

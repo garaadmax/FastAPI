@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from typing import Any, List
-
+import logging
 from fastapi import Depends, Request, status
 from fastapi.exceptions import HTTPException
 from fastapi.security import HTTPBearer
@@ -23,6 +21,7 @@ from errors import (
 )
 
 user_service = UserService()
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 
 class TokenBearer(HTTPBearer):
@@ -31,7 +30,7 @@ class TokenBearer(HTTPBearer):
 
     async def __call__(self, request: Request) -> dict:
         creds = await super().__call__(request)
-
+        # logging.info(creds)
         token = creds.credentials
 
         token_data = decode_token(token)
